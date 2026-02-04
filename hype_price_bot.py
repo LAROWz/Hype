@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 
 # Bot configuration
-DISCORD_TOKEN = 'DISCORD_TOKEN'
+DISCORD_TOKEN = os.environ.get('DISCORD_TOKEN', 'YOUR_DISCORD_BOT_TOKEN_HERE')
 UPDATE_INTERVAL = 60  # Update every 5 minutes (300 seconds)
 
 # Initialize bot with necessary intents
