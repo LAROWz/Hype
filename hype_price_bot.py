@@ -4,15 +4,32 @@ import aiohttp
 import asyncio
 import os
 from datetime import datetime
+from threading import Thread
+from flask import Flask
 
 # Bot configuration
 DISCORD_TOKEN = os.environ.get('DISCORD_TOKEN', 'YOUR_DISCORD_BOT_TOKEN_HERE')
-UPDATE_INTERVAL = 60  # Update every 5 minutes (300 seconds)
+UPDATE_INTERVAL = 60  # Update every minute (60 seconds)
 
 # Initialize bot with necessary intents
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
+
+# Flask app to keep Render happy
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "🔥 HYPE Price Bot is running!"
+
+@app.route('/health')
+def health():
+    return {"status": "healthy", "bot": "online"}
+
+def run_flask():
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
 
 class HypePriceTracker:
     def __init__(self):
@@ -110,7 +127,7 @@ async def update_price():
                 print(f"Error updating nickname: {e}")
         
         # Update bot status to show 24h change (matching SOL style)
-        arrow = "↗ " if tracker.change_24h >= 0 else "↘ "
+        arrow = "↗" if tracker.change_24h >= 0 else "↘"
         status_text = f"{arrow}{abs(tracker.change_24h):.1f}% 24h"
         
         await client.change_presence(
@@ -162,4 +179,9 @@ if __name__ == '__main__':
         print("⚠️  ERROR: Please set your Discord bot token in the script!")
         print("Replace 'YOUR_DISCORD_BOT_TOKEN_HERE' with your actual bot token")
     else:
+        # Start Flask in a separate thread
+        Thread(target=run_flask, daemon=True).start()
+        print("🌐 Flask server started")
+        
+        # Run Discord bot
         client.run(DISCORD_TOKEN)
