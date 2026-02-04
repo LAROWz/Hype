@@ -3,11 +3,11 @@
 This bot monitors the $HYPE (Hyperliquid) token price and displays it in your Discord server, matching the style of your existing crypto widgets.
 
 ## Features
-✅ Updates HYPE price every minute
-✅ Shows 24-hour price change percentage
-✅ Bot status displays current price in the member list
-✅ Optional: Post price updates in a channel
-✅ Command: `!hype` to check price anytime
+  ✅ Updates HYPE price every minute   
+  ✅ Shows 24-hour price change percentage  
+  ✅ Bot status displays current price in the member list  
+✅ Optional: Post price updates in a channel  
+✅ Command: `!hype` to check price anytime  
 
 ---
 
